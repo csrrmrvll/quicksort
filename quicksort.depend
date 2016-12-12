@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1481557293 source:c:\users\csr\documents\algorithm design and analyisis i\programming assignments\quicksort\main.cpp
+	<algorithm>
+	<cstdlib>
+	<fstream>
+	<functional>
+	<iostream>
+	<iterator>
+	<numeric>
+	<sstream>
+	<utility>
+	<vector>
+
