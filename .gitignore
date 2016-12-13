@@ -3,3 +3,4 @@
 /bin/Release/*.exe
 /obj/Debug/*.o
 /obj/Release/*.o
+/*.depend

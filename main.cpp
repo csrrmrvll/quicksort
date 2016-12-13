@@ -19,21 +19,35 @@ void output(Vector v)
     cout << endl;
 }
 
+int partition(Vector & v, int first, int last)  //  inclusive
+{
+    int pivot = v[first];
+    int i = first + 1;
+    for (int j = i; j <= last; ++j)
+    {
+        if (v[j] < pivot)
+        {
+            swap(v[i], v[j]);
+            ++i;
+        }
+    }
+    swap(v[first], v[i - 1]);
+    return i - 1;
+}
+
 int comparisons = 0;
 
-void quicksort(Iterator first, Iterator last)
+void quicksort(Vector & v, int first, int last) //  inclusive
 {
-
-    if(first == last) return;
-    int pivot = *first; //*(last - 1);
-    comparisons += last - first - 1;
-    Iterator middle1 = std::partition(first, last,
-                         [pivot](int em){ return em < pivot; });
-//    comparisons += last - middle1 - 1;
-    Iterator middle2 = std::partition(middle1, last,
-                         [pivot](int em){ return !(pivot < em); });
-    quicksort(first, middle1);
-    quicksort(middle2, last);
+    if (first >= last)
+    {
+        return;
+    }
+    comparisons += last - first;
+    swap(v[first], v[last]);    //  for the last!!!!
+    int p = partition(v, first, last);
+    quicksort(v, first, p - 1);
+    quicksort(v, p + 1, last);
 }
 
 Vector read()
@@ -62,13 +76,14 @@ Vector read()
 
 int main()
 {
-//    Vector v = { -1, 8, -3, 2 };
+//    Vector v = { -1, 0, -2, 1 };
     Vector v = read();
-    quicksort(begin(v), end(v));
-    cout << "number of comparisons choosing first element as pivot: " << comparisons << endl;
     int size = v.size();
+    quicksort(v, 0, size - 1);
+    cout << "number of comparisons: " << comparisons << endl;
     Vector sorted(size);
-    iota(sorted.begin(),sorted.end(),1);
+    int min = *min_element(begin(v), end(v));
+    iota(sorted.begin(),sorted.end(),min);
     if (v != sorted)
     {
         cout << "wrong sorting algorithm" << endl;
