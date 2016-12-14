@@ -4,3 +4,5 @@
 /obj/Debug/*.o
 /obj/Release/*.o
 /*.depend
+/obj
+/bin
