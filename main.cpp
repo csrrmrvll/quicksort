@@ -43,15 +43,16 @@ int getPivotIndex(Vector & v, int first, int last)
     {
         return v[first] < v[last] ? first : last;
     }
-    int middle;
-    if (size % 2 == 0)
-    {
-        middle = size / 2 - 1;
-    }
-    else
-    {
-        middle = size / 2;
-    }
+    int middle = first + last;
+    middle = middle / 2;
+//    if (size % 2 == 0)
+//    {
+//        middle = middle / 2 - 1;
+//    }
+//    else
+//    {
+//        middle = middle / 2;
+//    }
     int f = v[first],
         m = v[middle],
         l = v[last];
@@ -64,17 +65,18 @@ int comparisons = 0;
 
 void quicksort(Vector & v, int first, int last) //  inclusive
 {
-    if (first >= last)
+    if (first < last)
     {
-        return;
+        int size = last - first + 1;
+        comparisons += size - 1;
+        int pivotIndex = first;
+//        int pivotIndex = last;
+//        int pivotIndex = getPivotIndex(v, first, last);
+        swap(v[first], v[pivotIndex]);    //  for the median!!!!
+        int p = partition(v, first, last);
+        quicksort(v, first, p - 1);
+        quicksort(v, p + 1, last);
     }
-    comparisons += last - first;
-//    swap(v[first], v[last]);    //  for the last!!!!
-    int pivotIndex = getPivotIndex(v, first, last);
-    swap(v[first], v[pivotIndex]);    //  for the median!!!!
-    int p = partition(v, first, last);
-    quicksort(v, first, p - 1);
-    quicksort(v, p + 1, last);
 }
 
 Vector read()
@@ -82,6 +84,7 @@ Vector read()
     string line;
     ifstream is;
     is.open("C:\\Users\\csr\\Documents\\Algorithm design and analyisis I\\programming assignments\\quicksort\\bin\\Debug\\QuickSort.txt",std::ios::in);
+//    is.open("C:\\Users\\csr\\Documents\\Algorithm design and analyisis I\\programming assignments\\quicksort\\bin\\Debug\\1000.txt",std::ios::in);
     Vector v;
     if (is.is_open())
     {
@@ -103,8 +106,9 @@ Vector read()
 
 int main()
 {
-    Vector v = { 5, 4, 3, 2, 1, 0 };
-//    Vector v = read();
+//    Vector v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+//    Vector v = { 3, 9, 8, 4, 6, 10, 2, 5, 7, 1 };
+    Vector v = read();
     int size = v.size();
     quicksort(v, 0, size - 1);
     cout << "number of comparisons: " << comparisons << endl;
