@@ -22,7 +22,7 @@ void output(Vector v)
 
 int partition(Vector & v, int first, int last)  //  inclusive
 {
-    int pivot = v[first];
+    const int pivot = v[first];
     int i = first + 1;
     for (int j = i; j <= last; ++j)
     {
@@ -43,21 +43,12 @@ int getPivotIndex(Vector & v, int first, int last)
     {
         return v[first] < v[last] ? first : last;
     }
-    int middle = first + last;
-    middle = middle / 2;
-//    if (size % 2 == 0)
-//    {
-//        middle = middle / 2 - 1;
-//    }
-//    else
-//    {
-//        middle = middle / 2;
-//    }
-    int f = v[first],
-        m = v[middle],
-        l = v[last];
-    map<int,int> values{ make_pair(f, first), make_pair(m, middle), make_pair(l, last) };
-    int result = (++begin(values))->second;
+    const int   middle = (first + last) / 2,
+                f = v[first],
+                m = v[middle],
+                l = v[last];
+    const map<int,int> values{ make_pair(f, first), make_pair(m, middle), make_pair(l, last) };
+    const int result = (++begin(values))->second;
     return result;
 }
 
@@ -65,18 +56,19 @@ int comparisons = 0;
 
 void quicksort(Vector & v, int first, int last) //  inclusive
 {
-    if (first < last)
+    if (first >= last)
     {
-        int size = last - first + 1;
-        comparisons += size - 1;
-        int pivotIndex = first;
+        return;
+    }
+    const int size = last - first + 1;
+    comparisons += size - 1;
+    const int pivotIndex = first;
 //        int pivotIndex = last;
 //        int pivotIndex = getPivotIndex(v, first, last);
-        swap(v[first], v[pivotIndex]);    //  for the median!!!!
-        int p = partition(v, first, last);
-        quicksort(v, first, p - 1);
-        quicksort(v, p + 1, last);
-    }
+    swap(v[first], v[pivotIndex]);    //  for the median!!!!
+    const int p = partition(v, first, last);
+    quicksort(v, first, p - 1);
+    quicksort(v, p + 1, last);
 }
 
 Vector read()
@@ -109,7 +101,7 @@ int main()
 //    Vector v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 //    Vector v = { 3, 9, 8, 4, 6, 10, 2, 5, 7, 1 };
     Vector v = read();
-    int size = v.size();
+    const int size = v.size();
     quicksort(v, 0, size - 1);
     cout << "number of comparisons: " << comparisons << endl;
     Vector sorted(size);
