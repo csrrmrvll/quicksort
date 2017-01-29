@@ -20,9 +20,9 @@ void output(Vector v)
     cout << endl;
 }
 
-typedef enum { FIRST, LAST, MEDIAN } PivotSelectionMode;
+enum PivotSelectionMode { FIRST, LAST, MEDIAN };
 
-ostream & operator<<(ostream & out, const PivotSelectionMode & psm)
+ostream & operator<<(ostream & out, PivotSelectionMode psm)
 {
     switch (psm)
     {
@@ -148,8 +148,6 @@ Vector read()
 
 int main()
 {
-//    Vector v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-//    Vector v = { 3, 9, 8, 4, 6, 10, 2, 5, 7, 1 };
     Vector  v1 = read(),
             v2 = v1,
             v3 = v1;
