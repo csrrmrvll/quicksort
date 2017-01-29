@@ -113,8 +113,8 @@ Vector read()
 {
     string line;
     ifstream is;
-    is.open("C:\\Users\\csr\\Documents\\Algorithm design and analyisis I\\programming assignments\\quicksort\\bin\\Debug\\QuickSort.txt",std::ios::in);
-//    is.open("C:\\Users\\csr\\Documents\\Algorithm design and analyisis I\\programming assignments\\quicksort\\bin\\Debug\\1000.txt",std::ios::in);
+    is.open("C:\\Users\\csr\\Documents\\Algorithm design and analyisis I\\programming assignments\\quicksort\\QuickSort.txt",std::ios::in);
+//    is.open("C:\\Users\\csr\\Documents\\Algorithm design and analyisis I\\programming assignments\\quicksort\\1000.txt",std::ios::in);
     Vector v;
     if (is.is_open())
     {
