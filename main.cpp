@@ -148,15 +148,17 @@ Vector read()
 
 int main()
 {
-    Vector  v1 = read(),
-            v2 = v1,
-            v3 = v1;
-    Vector sorted(v1.size());
-    int min = *min_element(begin(v1), end(v1));
+    Vector v = read();
+    vector<pair<Vector, PivotSelectionMode>> vs = { make_pair(v, FIRST),
+                                                    make_pair(v, LAST),
+                                                    make_pair(v, MEDIAN) };
+    Vector sorted(v.size());
+    int min = *min_element(begin(v), end(v));
     iota(sorted.begin(),sorted.end(),min);
     QuickSort qs(sorted);
-    qs.sortAndGetComparisons(v1, FIRST);
-    qs.sortAndGetComparisons(v2, LAST);
-    qs.sortAndGetComparisons(v3, MEDIAN);
+    for (pair<Vector, PivotSelectionMode> vp : vs)
+    {
+        qs.sortAndGetComparisons(vp.first, static_cast<PivotSelectionMode>(vp.second));
+    }
     return EXIT_SUCCESS;
 }
