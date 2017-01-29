@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <iterator>
 #include <map>
 #include <sstream>
 #include <utility>
@@ -9,7 +8,6 @@
 
 using namespace std;
 using Vector = vector<int>;
-using Iterator = Vector::iterator;
 using PivotSelectionMode = enum { FIRST, LAST, MEDIAN };
 
 ostream & operator<<(ostream & out, PivotSelectionMode psm)
@@ -28,12 +26,6 @@ ostream & operator<<(ostream & out, PivotSelectionMode psm)
         out << "median of three";
         return out;
     }
-}
-
-void output(Vector v)
-{
-    copy(begin(v), end(v), ostream_iterator<int>(cout, " "));
-    cout << endl;
 }
 
 class QuickSort
