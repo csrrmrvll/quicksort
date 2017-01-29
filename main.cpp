@@ -20,18 +20,20 @@ void output(Vector v)
     cout << endl;
 }
 
+typedef enum { FIRST, LAST, MEDIAN } PivotSelectionMode;
+
 class QuickSort
 {
 public:
-    int sortAndGetComparisons(Vector & v)
+    int sortAndGetComparisons(Vector & v, PivotSelectionMode psm)
     {
         int comparisons = 0;
-        this->quicksort(v, 0, v.size() - 1, comparisons);
+        this->quicksort(v, 0, v.size() - 1, comparisons, psm);
         return comparisons;
     }
 
 private:
-    void quicksort(Vector & v, int first, int last, int & comparisons) //  inclusive
+    void quicksort(Vector & v, int first, int last, int & comparisons, PivotSelectionMode psm) //  inclusive
     {
         if (first >= last)
         {
@@ -39,13 +41,11 @@ private:
         }
         const int size = last - first + 1;
         comparisons += size - 1;
-        int pivotIndex = first;
-    //        int pivotIndex = last;
-    //        int pivotIndex = getPivotIndex(v, first, last);
+        int pivotIndex = getPivotIndex(v, first, last, psm);
         swap(v[first], v[pivotIndex]);    //  for the median!!!!
         pivotIndex = partition(v, first, last);
-        quicksort(v, first, pivotIndex - 1, comparisons);
-        quicksort(v, pivotIndex + 1, last, comparisons);
+        quicksort(v, first, pivotIndex - 1, comparisons, psm);
+        quicksort(v, pivotIndex + 1, last, comparisons, psm);
     }
 
     int partition(Vector & v, int first, int last)  //  inclusive
@@ -64,8 +64,19 @@ private:
         return i - 1;
     }
 
-    int getPivotIndex(Vector & v, int first, int last)
+    int getPivotIndex(Vector & v, int first, int last, PivotSelectionMode psm)
     {
+        switch (psm)
+        {
+        case FIRST:
+            return first;
+
+        case LAST:
+            return last;
+
+        default:
+            break;
+        }
         int size = last - first + 1;
         if (size < 3)
         {
@@ -110,17 +121,33 @@ int main()
 {
 //    Vector v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 //    Vector v = { 3, 9, 8, 4, 6, 10, 2, 5, 7, 1 };
-    Vector v = read();
-    QuickSort qs;
-    const int comparisons = qs.sortAndGetComparisons(v);
-    cout << "number of comparisons: " << comparisons << endl;
-    Vector sorted(v.size());
-    int min = *min_element(begin(v), end(v));
+    Vector  v1 = read(),
+            v2 = v1,
+            v3 = v1;
+    Vector sorted(v1.size());
+    int min = *min_element(begin(v1), end(v1));
     iota(sorted.begin(),sorted.end(),min);
-    if (v != sorted)
+    QuickSort qs;
+    const int comparisons1 = qs.sortAndGetComparisons(v1, FIRST);
+    if (v1 != sorted)
     {
         cout << "wrong sorting algorithm" << endl;
         return EXIT_FAILURE;
     }
+    cout << "number of comparisons choosing first element as pivot: " << comparisons1 << endl;
+    const int comparisons2 = qs.sortAndGetComparisons(v2, LAST);
+    if (v2 != sorted)
+    {
+        cout << "wrong sorting algorithm" << endl;
+        return EXIT_FAILURE;
+    }
+    cout << "number of comparisons choosing last element as pivot: " << comparisons2 << endl;
+    const int comparisons3 = qs.sortAndGetComparisons(v3, MEDIAN);
+    if (v3 != sorted)
+    {
+        cout << "wrong sorting algorithm" << endl;
+        return EXIT_FAILURE;
+    }
+    cout << "number of comparisons using median of three as pivot: " << comparisons3 << endl;
     return EXIT_SUCCESS;
 }
