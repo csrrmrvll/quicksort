@@ -22,17 +22,46 @@ void output(Vector v)
 
 typedef enum { FIRST, LAST, MEDIAN } PivotSelectionMode;
 
+ostream & operator<<(ostream & out, const PivotSelectionMode & psm)
+{
+    switch (psm)
+    {
+    case FIRST:
+        out << "first";
+        return out;
+
+    case LAST:
+        out << "last";
+        return out;
+
+    default:
+        out << "median of three";
+        return out;
+    }
+}
+
 class QuickSort
 {
 public:
+    QuickSort(const Vector & sorted)
+    :   sorted_(sorted)
+    { ; }
+
     int sortAndGetComparisons(Vector & v, PivotSelectionMode psm)
     {
         int comparisons = 0;
         this->quicksort(v, 0, v.size() - 1, comparisons, psm);
+        if (v != this->sorted_)
+        {
+            throw runtime_error("wrong sorting algorithm");
+        }
+        cout << "number of comparisons choosing " << psm << " element as pivot: " << comparisons << endl;
         return comparisons;
     }
 
 private:
+    const Vector & sorted_;
+
     void quicksort(Vector & v, int first, int last, int & comparisons, PivotSelectionMode psm) //  inclusive
     {
         if (first >= last)
@@ -127,27 +156,9 @@ int main()
     Vector sorted(v1.size());
     int min = *min_element(begin(v1), end(v1));
     iota(sorted.begin(),sorted.end(),min);
-    QuickSort qs;
-    const int comparisons1 = qs.sortAndGetComparisons(v1, FIRST);
-    if (v1 != sorted)
-    {
-        cout << "wrong sorting algorithm" << endl;
-        return EXIT_FAILURE;
-    }
-    cout << "number of comparisons choosing first element as pivot: " << comparisons1 << endl;
-    const int comparisons2 = qs.sortAndGetComparisons(v2, LAST);
-    if (v2 != sorted)
-    {
-        cout << "wrong sorting algorithm" << endl;
-        return EXIT_FAILURE;
-    }
-    cout << "number of comparisons choosing last element as pivot: " << comparisons2 << endl;
-    const int comparisons3 = qs.sortAndGetComparisons(v3, MEDIAN);
-    if (v3 != sorted)
-    {
-        cout << "wrong sorting algorithm" << endl;
-        return EXIT_FAILURE;
-    }
-    cout << "number of comparisons using median of three as pivot: " << comparisons3 << endl;
+    QuickSort qs(sorted);
+    qs.sortAndGetComparisons(v1, FIRST);
+    qs.sortAndGetComparisons(v2, LAST);
+    qs.sortAndGetComparisons(v3, MEDIAN);
     return EXIT_SUCCESS;
 }
